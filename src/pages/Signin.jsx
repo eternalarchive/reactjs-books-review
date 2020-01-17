@@ -16,19 +16,21 @@ const StyledCol = styled(Col).attrs(() => ({
   span: 24,
 }))``;
 
-const StyledTitle = styled.div`
+const StyledTitle = styled.h1`
   text-align: center;
   font-size: 40px;
   font-weight: bold;
   color: #642828;
   text-transform: uppercase;
+  margin-bottom: 0;
 `;
 
-const StyledSubTitle = styled.div`
+const StyledSubTitle = styled.p`
   text-align: center;
   font-size: 27px;
   font-weight: bold;
   text-transform: uppercase;
+  margin-bottom: 0;
 `;
 
 const StyledUnderline = styled.div`
