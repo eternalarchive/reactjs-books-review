@@ -15,7 +15,7 @@ const StyledP = styled.p`
 `;
 
 const InputButton = ({ email, password }) => {
-  const inputValue = email ? email : password;
+  const inputValue = email ? 'Email' : 'Password';
   return (
     <div>
       <StyledLabel htmlFor={inputValue}>
@@ -27,7 +27,7 @@ const InputButton = ({ email, password }) => {
           type={inputValue}
           id={inputValue}
           placeholder={`${inputValue}을 입력해주세요.`}
-          autoFocus={inputValue === 'email' ? true : false}
+          autoFocus={inputValue === 'Email' ? true : false}
         />
       </StyledLabel>
     </div>
