@@ -10,7 +10,7 @@ const StyledCol = styled(Col).attrs(() => ({
   span: 12,
 }))`
   vertical-align: top;
-  padding: 30px;
+  padding: 20px 30px;
 `;
 
 const StyledLoginTitle = styled.h2`
