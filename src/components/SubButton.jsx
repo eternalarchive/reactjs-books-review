@@ -13,13 +13,18 @@ const StyledMessage = styled.em`
   font-style: normal;
 `;
 
-const SignupButton = () => {
+const SubButton = ({ signin, recovery }) => {
+  const buttonValue = signin ? signin : recovery;
   return (
     <StyledBox>
-      <StyledMessage>Need to create an account?</StyledMessage>
-      <Button>SIGN UP</Button>
+      <StyledMessage>
+        {buttonValue === 'signin'
+          ? 'Need to create an account?'
+          : 'Forgot your password?'}
+      </StyledMessage>
+      <Button>{buttonValue.toUpperCase()}</Button>
     </StyledBox>
   );
 };
 
-export default SignupButton;
+export default SubButton;

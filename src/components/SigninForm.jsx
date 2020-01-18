@@ -2,11 +2,9 @@ import React from 'react';
 import { Col } from 'antd';
 import styled from 'styled-components';
 
-import EmailInput from './EmailInput';
-import PasswordInput from './PasswordInput';
+import InputButton from './InputButton';
 import SigninButton from './SigninButton';
-import SignupButton from './SignupButton';
-import RecoveryButton from './RecoveryButton';
+import SubButton from './SubButton';
 
 const StyledCol = styled(Col).attrs(() => ({
   span: 12,
@@ -33,12 +31,12 @@ const StyledUnderline = styled.div`
 const SigninForm = () => (
   <StyledCol>
     <StyledLoginTitle>LOG IN. START SEARCHING</StyledLoginTitle>
-    <EmailInput />
-    <PasswordInput />
+    <InputButton email="email" />
+    <InputButton password="password" />
     <SigninButton />
     <StyledUnderline />
-    <SignupButton />
-    <RecoveryButton />
+    <SubButton signin="signin" />
+    <SubButton recovery="recovery" />
   </StyledCol>
 );
 
