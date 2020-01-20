@@ -35,7 +35,7 @@ const SigninForm = () => (
     <InputButton password="password" />
     <SigninButton />
     <StyledUnderline />
-    <SubButton signin="signin" />
+    <SubButton signup="signup" />
     <SubButton recovery="recovery" />
   </StyledCol>
 );

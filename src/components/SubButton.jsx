@@ -13,12 +13,12 @@ const StyledMessage = styled.em`
   font-style: normal;
 `;
 
-const SubButton = ({ signin, recovery }) => {
-  const buttonValue = signin ? signin : recovery;
+const SubButton = ({ signup, recovery }) => {
+  const buttonValue = signup ? 'signup' : 'recovery';
   return (
     <StyledBox>
       <StyledMessage>
-        {buttonValue === 'signin'
+        {buttonValue === 'signup'
           ? 'Need to create an account?'
           : 'Forgot your password?'}
       </StyledMessage>
