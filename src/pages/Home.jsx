@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import withAuth from '../hocs/withAuth';
 
-const Home = () => {
+const Home = ({ token }) => {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('https://api.marktube.tv/v1/book', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        setBooks(res.data);
+      });
+  }, [token]);
+
   return (
     <div>
       <ul>
@@ -13,9 +29,8 @@ const Home = () => {
         </li>
       </ul>
       <h2>Home</h2>
-      <p>여기는 홈입니다.</p>
     </div>
   );
 };
 
-export default Home;
+export default withAuth(Home);
