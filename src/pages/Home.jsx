@@ -17,17 +17,10 @@ const Home = ({ token }) => {
       })
       .then(res => {
         setBooks(res.data);
-        console.log(res.data);
       });
   }, [token]);
 
   const signOut = () => {
-    // axios
-    //   .delete('https://api.marktube.tv/v1/me', {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   });
     localStorage.removeItem('token');
     history.push('/signin');
   };
@@ -37,23 +30,30 @@ const Home = ({ token }) => {
       <Button onClick={signOut}>로그아웃</Button>
       <ul>
         <li>
-          <Link to="/">홈</Link>
-        </li>
-        <li>
           <Link to="/signin">로그인</Link>
         </li>
         <li>
           <Link to="/Bookadd">책 추가하기</Link>
         </li>
       </ul>
-      <h2>Home</h2>
-      <ul>
-        {books.map(book => (
-          <li key={book.bookId}>
-            {book.author} {book.title}
-          </li>
-        ))}
-      </ul>
+      <h2>여기는 Home 입니다.</h2>
+      <section>
+        <h3>Book List</h3>
+        <ul style={{ paddingLeft: '10px' }}>
+          {books.map(book => (
+            <li
+              key={book.bookId}
+              style={{ listStyleType: 'none', marginBottom: '10px' }}
+            >
+              책 번호: {book.bookId}
+              <br />
+              저자: {book.author}
+              <br />
+              제목: {book.title}
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 };
