@@ -21,6 +21,11 @@ const Home = ({ token }) => {
   }, [token]);
 
   const signOut = () => {
+    axios.delete('https://api.marktube.tv/v1/me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     localStorage.removeItem('token');
     history.push('/signin');
   };
