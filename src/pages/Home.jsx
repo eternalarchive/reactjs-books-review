@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import axios from 'axios';
+import styled from 'styled-components';
 import withAuth from '../hocs/withAuth';
+import { useDispatch } from 'react-redux';
+import { removeToken } from '../actions';
+
+const StyledHomeContainer = styled.div`
+  width: 1024;
+  margin: 0 auto;
+`;
+
+const StyledTitle = styled.h1`
+  color: #002d93;
+  font-size: 36px;
+  width: 294px;
+  line-height: 1.15;
+`;
 
 const Home = ({ token }) => {
   const [books, setBooks] = useState([]);
-  const history = useHistory();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axios
@@ -16,22 +31,27 @@ const Home = ({ token }) => {
         },
       })
       .then(res => {
+        console.log(res.data);
         setBooks(res.data);
       });
   }, [token]);
 
-  const signOut = () => {
-    axios.delete('https://api.marktube.tv/v1/me', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  const signOut = async () => {
+    try {
+      await axios.delete('https://api.marktube.tv/v1/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
     localStorage.removeItem('token');
-    history.push('/signin');
+    dispatch(removeToken());
   };
 
   return (
-    <div>
+    <StyledHomeContainer>
       <Button onClick={signOut}>로그아웃</Button>
       <ul>
         <li>
@@ -41,7 +61,7 @@ const Home = ({ token }) => {
           <Link to="/Bookadd">책 추가하기</Link>
         </li>
       </ul>
-      <h2>여기는 Home 입니다.</h2>
+      <StyledTitle>Review Service For Books</StyledTitle>
       <section>
         <h3>Book List</h3>
         <ul style={{ paddingLeft: '10px' }}>
@@ -59,7 +79,7 @@ const Home = ({ token }) => {
           ))}
         </ul>
       </section>
-    </div>
+    </StyledHomeContainer>
   );
 };
 

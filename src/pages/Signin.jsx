@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'antd';
 import SigninBg from '../components/SigninBg';
-import SigninForm from '../components/SigninForm';
+import SiginFormContainer from '../containers/SiginFormContainer';
 
 // styled-components
 const StyledRow = styled(Row).attrs(() => ({
@@ -62,7 +62,7 @@ const Signin = () => (
       <StyledUnderline />
       <StyledContents>
         <SigninBg />
-        <SigninForm />
+        <SiginFormContainer />
       </StyledContents>
     </StyledCol>
   </StyledRow>
