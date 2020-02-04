@@ -29,11 +29,10 @@ const StyledUnderline = styled.div`
   width: 100%;
 `;
 
-const SigninForm = ({ loading, login }) => {
+const SigninForm = ({ loading, login, errorName }) => {
   const history = useHistory();
   const emailRef = React.createRef();
   const passwordRef = React.createRef();
-  // const [loading, setLoading] = useState(false);
 
   async function click() {
     const email = emailRef.current.state.value;
@@ -46,16 +45,7 @@ const SigninForm = ({ loading, login }) => {
       await login(email, password);
       history.push('/');
     } catch (error) {
-      console.log(error);
-      // message는 그냥 함수(대문자로 시작하면 컴포넌트)
-      if (error.response.data.error === 'USER_NOT_EXIST') {
-        message.error(`This is not a valid ID.`);
-      } else if (error.response.data.error === 'PASSWORD_NOT_MATCH') {
-        message.error(`This is not a valid password.`);
-      } else {
-        message.error(`Login Error`);
-        message.error(error.response.data.error);
-      }
+      message.error(errorName);
     }
   }
 

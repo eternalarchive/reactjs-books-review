@@ -1,11 +1,19 @@
 import { connect } from 'react-redux';
 import SigninForm from '../components/SigninForm';
-import { setToken, startLoading, endLoading } from '../actions';
+import {
+  setToken,
+  startLoading,
+  endLoading,
+  userError,
+  passwordError,
+  loginError,
+} from '../actions';
 import axios from 'axios';
 
 export default connect(
   state => ({
     loading: state.loading,
+    errorName: state.errorName,
   }),
   dispatch => ({
     login: async (email, password) => {
@@ -23,6 +31,13 @@ export default connect(
       } catch (error) {
         console.log(error);
         dispatch(endLoading());
+        if (error.response.data.error === 'USER_NOT_EXIST') {
+          dispatch(userError());
+        } else if (error.response.data.error === 'PASSWORD_NOT_MATCH') {
+          dispatch(passwordError());
+        } else {
+          dispatch(loginError());
+        }
         throw error;
       }
     },

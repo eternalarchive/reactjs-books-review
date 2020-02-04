@@ -20,3 +20,19 @@ export const startLoading = () => ({
 export const endLoading = () => ({
   type: END_LOADING,
 });
+
+export const USER_NOT_EXIST = 'USER_NOT_EXIST';
+export const PASSWORD_NOT_MATCH = 'PASSWORD_NOT_MATCH';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
+
+export const userError = () => ({
+  type: USER_NOT_EXIST,
+});
+
+export const passwordError = () => ({
+  type: PASSWORD_NOT_MATCH,
+});
+
+export const loginError = () => ({
+  type: PASSWORD_NOT_MATCH,
+});
