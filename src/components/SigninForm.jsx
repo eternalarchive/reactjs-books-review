@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, message } from 'antd';
 import styled from 'styled-components';
-import axios from 'axios';
 
 import InputButton from './InputButton';
 import SigninButton from './SigninButton';
 import SubButton from './SubButton';
+import { useEffect } from 'react';
 
 const StyledCol = styled(Col).attrs(() => ({
   span: 12,
@@ -30,47 +30,33 @@ const StyledUnderline = styled.div`
   width: 100%;
 `;
 
-const SigninForm = () => {
+const SigninForm = ({ loading, login, error }) => {
   const history = useHistory();
   const emailRef = React.createRef();
   const passwordRef = React.createRef();
-  const [loading, setLoading] = useState(false);
 
   async function click() {
     const email = emailRef.current.state.value;
     const password = passwordRef.current.state.value;
-    console.log(emailRef, passwordRef);
-    console.log(email, password);
+    console.log('email:', email, 'password:', password);
 
     // async, await
     try {
-      // 리퀘스트 보내기 전 로딩 시작
-      setLoading(true);
-      const response = await axios.post('https://api.marktube.tv/v1/me', {
-        email,
-        password,
-      });
-      console.log(response.data);
-      const { token } = response.data;
-      // 성공 후 로딩 끝
-      setLoading(false);
-      localStorage.setItem('token', token);
+      await login(email, password);
       history.push('/');
-    } catch (error) {
-      console.log(error);
-      // 에러 후 로딩 끝
-      setLoading(false);
-      // message는 그냥 함수(대문자로 시작하면 컴포넌트)
-      if (error.response.data.error === 'USER_NOT_EXIST') {
-        message.error(`This is not a valid ID.`);
-      } else if (error.response.data.error === 'PASSWORD_NOT_MATCH') {
-        message.error(`This is not a valid password.`);
-      } else {
-        message.error(`Login Error`);
-        message.error(error.response.data.error);
-      }
-    }
+    } catch {}
   }
+
+  useEffect(() => {
+    if (error === null) return;
+    if (error.response.data.error === 'USER_NOT_EXIST') {
+      message.error('유저가 없습니다.');
+    } else if (error.response.data.error === 'PASSWORD_NOT_MATCH') {
+      message.error('비밀번호가 틀렸습니다.');
+    } else {
+      message.error('로그인에 문제가 있습니다.');
+    }
+  }, [error]);
 
   return (
     <StyledCol>
