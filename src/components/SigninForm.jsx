@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import InputButton from './InputButton';
 import SigninButton from './SigninButton';
 import SubButton from './SubButton';
+import { useEffect } from 'react';
 
 const StyledCol = styled(Col).attrs(() => ({
   span: 12,
@@ -29,7 +30,7 @@ const StyledUnderline = styled.div`
   width: 100%;
 `;
 
-const SigninForm = ({ loading, login, errorName }) => {
+const SigninForm = ({ loading, login, error }) => {
   const history = useHistory();
   const emailRef = React.createRef();
   const passwordRef = React.createRef();
@@ -37,17 +38,25 @@ const SigninForm = ({ loading, login, errorName }) => {
   async function click() {
     const email = emailRef.current.state.value;
     const password = passwordRef.current.state.value;
-    console.log(emailRef, passwordRef);
-    console.log(email, password);
+    console.log('email:', email, 'password:', password);
 
     // async, await
     try {
       await login(email, password);
       history.push('/');
-    } catch (error) {
-      message.error(errorName);
-    }
+    } catch {}
   }
+
+  useEffect(() => {
+    if (error === null) return;
+    if (error.response.data.error === 'USER_NOT_EXIST') {
+      message.error('유저가 없습니다.');
+    } else if (error.response.data.error === 'PASSWORD_NOT_MATCH') {
+      message.error('비밀번호가 틀렸습니다.');
+    } else {
+      message.error('로그인에 문제가 있습니다.');
+    }
+  }, [error]);
 
   return (
     <StyledCol>

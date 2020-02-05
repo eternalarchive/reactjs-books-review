@@ -4,21 +4,21 @@ import {
   setToken,
   startLoading,
   endLoading,
-  userError,
-  passwordError,
-  loginError,
+  setError,
+  clearError,
 } from '../actions';
 import axios from 'axios';
 
 export default connect(
   state => ({
     loading: state.loading,
-    errorName: state.errorName,
+    error: state.error,
   }),
   dispatch => ({
     login: async (email, password) => {
       try {
         dispatch(startLoading());
+        dispatch(clearError());
         const response = await axios.post('https://api.marktube.tv/v1/me', {
           email,
           password,
@@ -31,13 +31,7 @@ export default connect(
       } catch (error) {
         console.log(error);
         dispatch(endLoading());
-        if (error.response.data.error === 'USER_NOT_EXIST') {
-          dispatch(userError());
-        } else if (error.response.data.error === 'PASSWORD_NOT_MATCH') {
-          dispatch(passwordError());
-        } else {
-          dispatch(loginError());
-        }
+        dispatch(setError(error));
         throw error;
       }
     },
