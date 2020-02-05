@@ -3,12 +3,14 @@ import { SET_ERROR, CLEAR_ERROR } from '../actions';
 const initialState = null;
 
 const error = (state = initialState, action) => {
-  if (action.type === SET_ERROR) {
-    return action.error;
-  } else if (action.type === CLEAR_ERROR) {
-    return null;
+  switch (action.type) {
+    case SET_ERROR:
+      return action.error;
+    case CLEAR_ERROR:
+      return null;
+    default:
+      return state;
   }
-  return state;
 };
 
 export default error;
