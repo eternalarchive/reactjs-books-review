@@ -14,21 +14,20 @@ const StyledP = styled.p`
   margin-bottom: 0.5em;
 `;
 
-const InputButton = ({ email, password, emailRef, passwordRef }) => {
-  const inputValue = email ? 'Email' : 'Password';
+const InputButton = ({ type, refType }) => {
   return (
     <div>
-      <StyledLabel htmlFor={inputValue}>
+      <StyledLabel htmlFor={type}>
         <StyledP>
-          {inputValue}
+          {type}
           <StyledStar>*</StyledStar>
         </StyledP>
         <Input
-          type={inputValue}
-          id={inputValue}
-          placeholder={`${inputValue}을 입력해주세요.`}
-          ref={email ? emailRef : passwordRef}
-          autoFocus={inputValue === 'Email' ? true : false}
+          type={type}
+          id={type}
+          placeholder={`${type}을 입력해주세요.`}
+          ref={refType}
+          autoFocus={type === 'email' ? true : false}
         />
       </StyledLabel>
     </div>

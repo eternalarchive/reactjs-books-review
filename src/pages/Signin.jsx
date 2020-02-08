@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Row, Col } from 'antd';
 import SigninBg from '../components/SigninBg';
 import SiginFormContainer from '../containers/SiginFormContainer';
+import withAuth from '../hocs/withAuth';
 
 // styled-components
 const StyledRow = styled(Row).attrs(() => ({
@@ -68,4 +69,4 @@ const Signin = () => (
   </StyledRow>
 );
 
-export default Signin;
+export default withAuth(Signin, false);

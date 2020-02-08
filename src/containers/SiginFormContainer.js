@@ -6,6 +6,7 @@ import {
   endLoading,
   setError,
   clearError,
+  loginThunk,
 } from '../actions';
 import axios from 'axios';
 
@@ -34,6 +35,9 @@ export default connect(
         dispatch(setError(error));
         throw error;
       }
+    },
+    loginThunk: (email, password) => {
+      dispatch(loginThunk(email, password));
     },
   }),
 )(SigninForm);

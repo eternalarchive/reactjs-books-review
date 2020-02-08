@@ -61,12 +61,12 @@ const SigninForm = ({ loading, login, error }) => {
   return (
     <StyledCol>
       <StyledLoginTitle>LOG IN. START SEARCHING</StyledLoginTitle>
-      <InputButton email="email" emailRef={emailRef} />
-      <InputButton password="password" passwordRef={passwordRef} />
+      <InputButton type="email" refType={emailRef} />
+      <InputButton type="password" refType={passwordRef} />
       <SigninButton loading={loading} click={click} />
       <StyledUnderline />
-      <SubButton signup="signup" />
-      <SubButton recovery="recovery" />
+      <SubButton typeContent="signup" />
+      <SubButton typeContent="recovery" />
     </StyledCol>
   );
 };
