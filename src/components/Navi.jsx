@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Navi = ({ token, logoutThunk }) => {
-  function logout() {
-    logoutThunk(token);
+const Navi = ({ token, logout }) => {
+  function clickLogout() {
+    logout();
   }
   return (
     <div>
-      <button onClick={logout}>로그 아웃</button>
+      <button onClick={clickLogout}>로그 아웃</button>
     </div>
   );
 };

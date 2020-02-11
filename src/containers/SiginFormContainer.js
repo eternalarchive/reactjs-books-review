@@ -1,43 +1,30 @@
-import { connect } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import SigninForm from '../components/SigninForm';
-import {
-  setToken,
-  startLoading,
-  endLoading,
-  setError,
-  clearError,
-  loginThunk,
-} from '../actions';
-import axios from 'axios';
+import { startLoginSaga } from '../redux/modules/auth';
 
-export default connect(
-  state => ({
-    loading: state.loading,
-    error: state.error,
-  }),
-  dispatch => ({
-    login: async (email, password) => {
-      try {
-        dispatch(startLoading());
-        dispatch(clearError());
-        const response = await axios.post('https://api.marktube.tv/v1/me', {
-          email,
-          password,
-        });
-        console.log(response.data);
-        const { token } = response.data;
-        dispatch(endLoading());
-        localStorage.setItem('token', token);
-        dispatch(setToken(token));
-      } catch (error) {
-        console.log(error);
-        dispatch(endLoading());
-        dispatch(setError(error));
-        throw error;
-      }
+const SigninFormContainer = props => {
+  const token = useSelector(state => state.auth.token);
+  const loading = useSelector(state => state.auth.loading);
+  const error = useSelector(state => state.auth.error);
+  const dispatch = useDispatch();
+
+  const login = useCallback(
+    (email, password) => {
+      dispatch(startLoginSaga({ email, password }));
     },
-    loginThunk: (email, password) => {
-      dispatch(loginThunk(email, password));
-    },
-  }),
-)(SigninForm);
+    [dispatch],
+  );
+
+  return (
+    <SigninForm
+      {...props}
+      token={token}
+      loading={loading}
+      error={error}
+      login={login}
+    />
+  );
+};
+
+export default SigninFormContainer;

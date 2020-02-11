@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import withAuth from '../hocs/withAuth';
 import BooksContainer from '../containers/BooksContainer';
@@ -19,18 +18,19 @@ const StyledTitle = styled.h1`
 `;
 
 const Home = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const openPopup = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <StyledHomeContainer>
       <NaviContainer />
-      <ul>
-        <li>
-          <Link to="/Bookadd">책 추가하기</Link>
-        </li>
-      </ul>
+      <button onClick={openPopup}>책 추가하기</button>
       <StyledTitle>Review Service For Books</StyledTitle>
       <section>
         <h3>Book List</h3>
-        <BooksContainer />
+        <BooksContainer isOpen={isOpen} setIsOpen={setIsOpen} />
       </section>
     </StyledHomeContainer>
   );

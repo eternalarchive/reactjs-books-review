@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { Col, message } from 'antd';
 import styled from 'styled-components';
 
@@ -31,7 +30,6 @@ const StyledUnderline = styled.div`
 `;
 
 const SigninForm = ({ loading, login, error }) => {
-  const history = useHistory();
   const emailRef = React.createRef();
   const passwordRef = React.createRef();
 
@@ -39,12 +37,7 @@ const SigninForm = ({ loading, login, error }) => {
     const email = emailRef.current.state.value;
     const password = passwordRef.current.state.value;
     console.log('email:', email, 'password:', password);
-
-    // async, await
-    try {
-      await login(email, password);
-      history.push('/');
-    } catch {}
+    login(email, password);
   }
 
   useEffect(() => {

@@ -1,21 +1,47 @@
-import { connect } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Books from '../components/Books';
-import { setBooksThunk, deleteBooksThunk } from '../actions';
+import {
+  startBooksSaga,
+  deleteBookSaga,
+  addBookSaga,
+} from '../redux/modules/books';
 
-const mapStateToProps = state => ({
-  token: state.token,
-  books: state.books,
-  loading: state.loading,
-  error: state.error,
-});
+const BooksContainer = props => {
+  const books = useSelector(state => state.books.books);
+  const loading = useSelector(state => state.books.loading);
+  const error = useSelector(state => state.books.error);
+  const dispatch = useDispatch();
 
-const mapDispatchToProps = dispatch => ({
-  setBooks: token => {
-    dispatch(setBooksThunk(token));
-  },
-  deleteBook: (token, id) => {
-    dispatch(deleteBooksThunk(token, id));
-  },
-});
+  const getBooks = useCallback(() => {
+    dispatch(startBooksSaga());
+  }, [dispatch]);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Books);
+  const deleteBook = useCallback(
+    bookId => {
+      dispatch(deleteBookSaga({ bookId }));
+    },
+    [dispatch],
+  );
+
+  const addBook = useCallback(
+    (author, title) => {
+      dispatch(addBookSaga({ author, title }));
+    },
+    [dispatch],
+  );
+
+  return (
+    <Books
+      {...props}
+      books={books}
+      loading={loading}
+      error={error}
+      getBooks={getBooks}
+      deleteBook={deleteBook}
+      addBook={addBook}
+    />
+  );
+};
+
+export default BooksContainer;

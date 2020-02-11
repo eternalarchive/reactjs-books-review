@@ -1,12 +1,28 @@
-import { connect } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Navi from '../components/Navi';
-import { logoutThunk } from '../actions';
+import { startLogoutSaga } from '../redux/modules/auth';
 
-export default connect(
-  state => ({ token: state.token }),
-  dispatch => ({
-    logoutThunk: token => {
-      dispatch(logoutThunk(token));
-    },
-  }),
-)(Navi);
+const NaviContainer = props => {
+  const token = useSelector(state => state.auth.token);
+  const loading = useSelector(state => state.auth.loading);
+  const error = useSelector(state => state.auth.error);
+  const dispatch = useDispatch();
+
+  const logout = useCallback(() => {
+    console.log('123');
+    dispatch(startLogoutSaga());
+  }, [dispatch]);
+
+  return (
+    <Navi
+      {...props}
+      token={token}
+      loading={loading}
+      error={error}
+      logout={logout}
+    />
+  );
+};
+
+export default NaviContainer;

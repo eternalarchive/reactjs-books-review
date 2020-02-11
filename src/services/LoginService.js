@@ -4,7 +4,7 @@ const LOGIN_API_URL = 'https://api.marktube.tv/v1/me';
 
 export default class LoginService {
   static async login(email, password) {
-    return axios.get(LOGIN_API_URL, {
+    return await axios.post(LOGIN_API_URL, {
       email,
       password,
     });
