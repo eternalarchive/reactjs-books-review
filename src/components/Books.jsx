@@ -3,18 +3,22 @@ import ReactDOM from 'react-dom';
 import { Button, Input } from 'antd';
 import styled from 'styled-components';
 
-const StyledBookListContainer = styled.ul`
-  width: 860px;
-`;
+const StyledBookListContainer = styled.ul``;
 
 const StyledBookList = styled.li`
   background-color: #002d93;
   position: relative;
   opacity: 1;
-  width: 250px;
-  height: 191px;
   padding: 14px;
+  width: 250px;
+  height: 190px;
   display: inline-block;
+  & + & {
+    margin-right: 10px;
+    &:last-child {
+      margin-right: 0px;
+    }
+  }
   &:hover {
     background-color: #60b198;
   }
@@ -38,16 +42,40 @@ const StyledBookAuthor = styled.p`
 `;
 
 const StyledPopContainer = styled.div`
-  width: 800px;
   padding: 30px;
-  margin: 0 auto;
-  border: 1px solid #999;
-  border-radius: 5px;
   background-color: white;
   display: ${props => (props.isOpen ? 'block' : 'none')};
   position: absolute;
   top: 0;
   left: 0;
+`;
+
+const StyledPopupTitle = styled.h2`
+  font-size: 2.4rem;
+  color: #002d93;
+`;
+
+const StyledLine = styled.p`
+  height: 2px;
+  background-color: #eee;
+`;
+
+const StyledPopupInputLabel = styled.label`
+  color: #002d93;
+`;
+
+const StyledPopupInput = styled.input`
+  display: block;
+  width: 100%;
+  line-height: 2.2;
+  padding: 10px;
+  border: 2px solid #002d93;
+`;
+
+const StyledBookRegiButton = styled.button`
+  background-color: #002d93;
+  color: #fff;
+  border: 0;
 `;
 
 const StyledCloseButton = styled.button`
@@ -56,7 +84,7 @@ const StyledCloseButton = styled.button`
   right: 10px;
   background-color: transparent;
   border: 0;
-  color: #fff;
+  color: ${props => (props.color ? props.color : '#fff')};
   font-weight: 700;
 `;
 
@@ -109,17 +137,30 @@ const Books = ({
     };
     return (
       <StyledPopContainer isOpen={isOpen}>
-        <h2>책 등록하기</h2>
+        <StyledPopupTitle>BOOK REGISTRATION</StyledPopupTitle>
         <p>입력하신 값이 없을 경우 등록되지 않습니다.</p>
-        <label id="author">저자: </label>
-        <Input htmlFor="author" type="text" ref={bookAuthorRef} />
-        <label id="book-title">제목: </label>
-        <Input htmlFor="book-title" type="text" ref={bookTitleRef} />
-        <Button onClick={addBookInfo} style={{ marginTop: '10px' }}>
-          등록
-        </Button>
+        <StyledLine />
+        <StyledPopupInputLabel id="book-title">제목</StyledPopupInputLabel>
+        <StyledPopupInput
+          htmlFor="book-title"
+          type="text"
+          ref={bookTitleRef}
+          placeholder="입력해주세요"
+        />
+        <StyledPopupInputLabel id="author">저자</StyledPopupInputLabel>
+        <StyledPopupInput
+          htmlFor="author"
+          type="text"
+          ref={bookAuthorRef}
+          placeholder="입력해주세요"
+        />
+        <StyledBookRegiButton onClick={addBookInfo}>
+          등록하기
+        </StyledBookRegiButton>
         <span style={{ marginLeft: '10px' }}>{addState}</span>
-        <StyledCloseButton onClick={closePopup}>X</StyledCloseButton>
+        <StyledCloseButton onClick={closePopup} color="#002D93">
+          X
+        </StyledCloseButton>
       </StyledPopContainer>
     );
   };
@@ -128,12 +169,9 @@ const Books = ({
     <>
       {loading && <p>로딩중...</p>}
       {ReactDOM.createPortal(renderWidget(), optionWidgetRoot)}
-      <StyledBookListContainer style={{ paddingLeft: '10px' }}>
+      <StyledBookListContainer>
         {books.map(book => (
-          <StyledBookList
-            key={book.bookId}
-            style={{ listStyleType: 'none', marginBottom: '10px' }}
-          >
+          <StyledBookList key={book.bookId}>
             <StyledBookId>{book.bookId}</StyledBookId>
             <StyledBookTitle>{book.title}</StyledBookTitle>
             <StyledBookAuthor>{book.author}</StyledBookAuthor>

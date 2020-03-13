@@ -10,7 +10,6 @@ const NaviContainer = props => {
   const dispatch = useDispatch();
 
   const logout = useCallback(() => {
-    console.log('123');
     dispatch(startLogoutSaga());
   }, [dispatch]);
 

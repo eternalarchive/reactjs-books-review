@@ -1,6 +1,7 @@
 import BookService from '../../services/BookService';
 import { put, delay, call, select, takeLeading } from 'redux-saga/effects';
 import { createAction, createActions, handleActions } from 'redux-actions';
+import { List } from 'immutable';
 
 const options = {
   prefix: 'reactjs-books-review/books',
@@ -80,6 +81,13 @@ const initialState = {
   loading: false,
   error: null,
 };
+
+// immutable
+// const initialState = {
+//   books: List(),
+//   loading: false,
+//   error: null,
+// };
 
 const books = handleActions(
   {

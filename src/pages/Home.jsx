@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import withAuth from '../hocs/withAuth';
 import BooksContainer from '../containers/BooksContainer';
-import NaviContainer from '../containers/NaviContainer';
+import Layout from '../components/Layout';
+import useToken from '../hooks/useToken';
 
 const StyledHomeContainer = styled.div`
-  width: 1024;
-  margin: 0 auto;
+  min-width: 1024px;
 `;
 
 const StyledTitle = styled.h1`
@@ -17,23 +17,53 @@ const StyledTitle = styled.h1`
   line-height: 1.15;
 `;
 
+const A11yTitle = styled.h3`
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  background-color: transparent;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+`;
+
+const StyledMainHeader = styled.header`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StyledAddButton = styled.button`
+  background-color: #eee;
+  border: 0px;
+  font-size: 2.5rem;
+`;
+
 const Home = () => {
   const [isOpen, setIsOpen] = useState(false);
   const openPopup = () => {
     setIsOpen(!isOpen);
   };
 
+  const token = useToken();
+  if (token === null) {
+    return <Redirect to="/signin" />;
+  }
+
   return (
-    <StyledHomeContainer>
-      <NaviContainer />
-      <button onClick={openPopup}>책 추가하기</button>
-      <StyledTitle>Review Service For Books</StyledTitle>
-      <section>
-        <h3>Book List</h3>
-        <BooksContainer isOpen={isOpen} setIsOpen={setIsOpen} />
-      </section>
-    </StyledHomeContainer>
+    <Layout>
+      <StyledHomeContainer>
+        <StyledMainHeader>
+          <StyledTitle>Review Service For Books</StyledTitle>
+          <StyledAddButton onClick={openPopup}>+</StyledAddButton>
+        </StyledMainHeader>
+        <section>
+          <A11yTitle>Book List</A11yTitle>
+          <BooksContainer isOpen={isOpen} setIsOpen={setIsOpen} />
+        </section>
+      </StyledHomeContainer>
+    </Layout>
   );
 };
 
-export default withAuth(Home);
+export default Home;
