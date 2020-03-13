@@ -19,7 +19,7 @@ const InputButton = ({ type, refType }) => {
     <div>
       <StyledLabel htmlFor={type}>
         <StyledP>
-          {type}
+          {type.toUpperCase()}
           <StyledStar>*</StyledStar>
         </StyledP>
         <Input
