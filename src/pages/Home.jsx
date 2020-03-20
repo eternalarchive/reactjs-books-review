@@ -5,9 +5,7 @@ import BooksContainer from '../containers/BooksContainer';
 import Layout from '../components/Layout';
 import useToken from '../hooks/useToken';
 
-const StyledHomeContainer = styled.div`
-  min-width: 1024px;
-`;
+const StyledHomeContainer = styled.div``;
 
 const StyledTitle = styled.h1`
   color: #002d93;
@@ -36,7 +34,7 @@ const StyledMainHeader = styled.header`
 const StyledAddButton = styled.button`
   background-color: #eee;
   border: 0px;
-  font-size: 2.5rem;
+  font-size: 2.4rem;
 `;
 
 const Home = () => {

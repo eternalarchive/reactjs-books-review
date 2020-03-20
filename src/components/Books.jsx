@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Input } from 'antd';
 import styled from 'styled-components';
 
 const StyledBookListContainer = styled.ul``;
 
 const StyledBookList = styled.li`
+  display: inline-block;
   background-color: #002d93;
   position: relative;
-  opacity: 1;
-  padding: 14px;
+  padding: 15px;
   width: 250px;
   height: 190px;
-  display: inline-block;
-  & + & {
-    margin-right: 10px;
-    &:last-child {
-      margin-right: 0px;
-    }
-  }
+  margin: 10px;
   &:hover {
     background-color: #60b198;
   }
@@ -28,6 +21,7 @@ const StyledBookTitle = styled.p`
   color: #fff;
   font-size: 20px;
   font-weight: 700;
+  word-break: keep-all;
 `;
 
 const StyledBookId = styled.p`
@@ -41,7 +35,29 @@ const StyledBookAuthor = styled.p`
   font-size: 18px;
 `;
 
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: ${props => (props.isOpen ? 'block' : 'none')};
+  background-color: #000;
+  opacity: 0.5;
+  width: 100%;
+  height: 100vh;
+`;
+
+const PopupLayout = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+`;
+
 const StyledPopContainer = styled.div`
+  width: 450px;
   padding: 30px;
   background-color: white;
   display: ${props => (props.isOpen ? 'block' : 'none')};
@@ -51,7 +67,7 @@ const StyledPopContainer = styled.div`
 `;
 
 const StyledPopupTitle = styled.h2`
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   color: #002d93;
 `;
 
@@ -60,8 +76,13 @@ const StyledLine = styled.p`
   background-color: #eee;
 `;
 
+const StyledInputBox = styled.div`
+  margin: 20px 0;
+`;
+
 const StyledPopupInputLabel = styled.label`
   color: #002d93;
+  font-weight: 500;
 `;
 
 const StyledPopupInput = styled.input`
@@ -76,6 +97,9 @@ const StyledBookRegiButton = styled.button`
   background-color: #002d93;
   color: #fff;
   border: 0;
+  padding: 10px;
+  font-size: 12px;
+  margin-top: 20px;
 `;
 
 const StyledCloseButton = styled.button`
@@ -85,7 +109,7 @@ const StyledCloseButton = styled.button`
   background-color: transparent;
   border: 0;
   color: ${props => (props.color ? props.color : '#fff')};
-  font-weight: 700;
+  font-size: 14px;
 `;
 
 const optionWidgetRoot = document.getElementById('addbook-modal-root');
@@ -113,17 +137,19 @@ const Books = ({
   const [addState, setAddState] = useState('');
 
   const addBookInfo = async () => {
-    const author = bookAuthorRef.current.state.value;
-    const title = bookTitleRef.current.state.value;
-    if (author === undefined || title === undefined) return;
+    const author = bookAuthorRef.current.value;
+    const title = bookTitleRef.current.value;
+    if (author === '' || title === '') {
+      setAddState(`등록에 실패했습니다.`);
+      return;
+    }
     try {
       addBook(author, title);
       setAddState(`등록이 완료되었습니다. 저자: ${author}, 제목: ${title}`);
-      bookAuthorRef.current.state.value = '';
-      bookTitleRef.current.state.value = '';
+      bookAuthorRef.current.value = '';
+      bookTitleRef.current.value = '';
     } catch (error) {
       console.log(error);
-      setAddState(`등록에 실패했습니다.`);
     }
   };
 
@@ -136,32 +162,41 @@ const Books = ({
       setIsOpen(false);
     };
     return (
-      <StyledPopContainer isOpen={isOpen}>
-        <StyledPopupTitle>BOOK REGISTRATION</StyledPopupTitle>
-        <p>입력하신 값이 없을 경우 등록되지 않습니다.</p>
-        <StyledLine />
-        <StyledPopupInputLabel id="book-title">제목</StyledPopupInputLabel>
-        <StyledPopupInput
-          htmlFor="book-title"
-          type="text"
-          ref={bookTitleRef}
-          placeholder="입력해주세요"
-        />
-        <StyledPopupInputLabel id="author">저자</StyledPopupInputLabel>
-        <StyledPopupInput
-          htmlFor="author"
-          type="text"
-          ref={bookAuthorRef}
-          placeholder="입력해주세요"
-        />
-        <StyledBookRegiButton onClick={addBookInfo}>
-          등록하기
-        </StyledBookRegiButton>
-        <span style={{ marginLeft: '10px' }}>{addState}</span>
-        <StyledCloseButton onClick={closePopup} color="#002D93">
-          X
-        </StyledCloseButton>
-      </StyledPopContainer>
+      <>
+        <Overlay isOpen={isOpen} onClick={closePopup} />
+        <StyledPopContainer isOpen={isOpen}>
+          <StyledPopupTitle>
+            BOOK
+            <br />
+            REGISTRATION
+          </StyledPopupTitle>
+          <p>입력하신 값이 없을 경우 등록되지 않습니다.</p>
+          <StyledLine />
+          <StyledInputBox>
+            <StyledPopupInputLabel id="book-title">제목</StyledPopupInputLabel>
+            <StyledPopupInput
+              htmlFor="book-title"
+              type="text"
+              ref={bookTitleRef}
+              placeholder="입력해주세요"
+            />
+          </StyledInputBox>
+          <StyledPopupInputLabel id="author">저자</StyledPopupInputLabel>
+          <StyledPopupInput
+            htmlFor="author"
+            type="text"
+            ref={bookAuthorRef}
+            placeholder="입력해주세요"
+          />
+          <StyledBookRegiButton onClick={addBookInfo}>
+            등록하기
+          </StyledBookRegiButton>
+          <span>{addState}</span>
+          <StyledCloseButton onClick={closePopup} color="#002D93">
+            X
+          </StyledCloseButton>
+        </StyledPopContainer>
+      </>
     );
   };
 

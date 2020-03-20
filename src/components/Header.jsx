@@ -6,7 +6,7 @@ import NaviContainer from '../containers/NaviContainer';
 const Header = () => (
   <StyledHeader>
     <StyledHome>
-      <StyledLink to="/">MARKTUBE</StyledLink>
+      <StyledLink to="/">MY BOOKS</StyledLink>
     </StyledHome>
     <NaviContainer />
   </StyledHeader>
